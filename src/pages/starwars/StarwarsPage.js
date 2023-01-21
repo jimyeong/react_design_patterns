@@ -8,6 +8,7 @@ import { utils } from "../../utils";
 import ResultBoard from "./components/ResultBoard/ResultBoard";
 import { starwarsMainReducer } from "./reducers/starwarsMainReducer";
 import { SortController } from "./containers";
+import { StarwarsPagenation } from "./components";
 
 // 문서로 먼저 작업을 정의하고 시작할 것
 // 1. when it's default state, show vehicles to users
@@ -30,6 +31,7 @@ export const MODEL = {
 const starwarsInitialState = {
   keyword: MODEL.STAR_SHIPS,
   isSorted: false,
+  sortedBy: "-",
 };
 export const StarwarsContext = createContext(starwarsInitialState);
 
@@ -49,7 +51,10 @@ function StarwarsPage({ children }) {
     starwarsInitialState
   );
   const getSearchKeyword = (keyword) => {
-    starwarsDispatch({ type: "SET_KEYWORD", keyword });
+    starwarsDispatch({
+      type: "SET_KEYWORD",
+      payload: keyword,
+    });
   };
   const callApi = async (params) => {
     const result = await _axios.get(params);
@@ -77,16 +82,20 @@ function StarwarsPage({ children }) {
         starwarsState.keyword == MODEL.STAR_SHIPS ||
         starwarsState.keyword == MODEL.VEHICLES
       ) {
-        result.data.results = result.data.results.sort(compareByKey("name"));
+        result.data.results = result.data.results.sort(
+          compareByKey(starwarsState.sortedBy)
+        );
       }
       if (starwarsState.keyword == MODEL.FILMS) {
-        result.data.results = result.data.results.sort(compareByKey("title"));
+        result.data.results = result.data.results.sort(
+          compareByKey(starwarsState.sortedBy)
+        );
       }
     }
     if (result) return result;
 
     return await callApi("/starships");
-  }, [starwarsState.keyword, starwarsState.isSorted]);
+  }, [starwarsState.keyword, starwarsState.sortedBy]);
   useEffect(() => {
     console.log("APP 실행됨");
   }, []);
@@ -113,6 +122,8 @@ function StarwarsPage({ children }) {
         <Wrappers.CONTENT_WRAPPER style={{ padding: 0, marginTop: "30px" }}>
           <ResultBoard />
         </Wrappers.CONTENT_WRAPPER>
+        {console.log("@@@@!@#!@#PAGE", asyncState)}
+        <StarwarsPagenation apiCall={callApi} />
       </StarwarsContext.Provider>
     </Wrappers.CONTENT_WRAPPER>
   );

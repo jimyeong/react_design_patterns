@@ -5,28 +5,32 @@ import { MODEL } from "../../StarwarsPage";
 import { useSelect } from "../../../../hooks/useSelect";
 const SortingSelectBlock = styled.div``;
 
-function SortingSelect({ callback, keyword }) {
+function SortingSelect({ callback, keyword, isSorted }) {
   let sortData = [];
 
   if (keyword === MODEL.FILMS) {
     sortData = [
+      { label: "-", value: "-" },
       { label: "title", value: "title" },
       { label: "model", value: "model" },
+      { label: "director", value: "director" },
     ];
   }
   if (keyword === MODEL.STAR_SHIPS) {
     sortData = [
+      { label: "-", value: "-" },
       { label: "name", value: "name" },
-      { label: "director", value: "director" },
+      { label: "manufacturer", value: "manufacturer" },
     ];
   }
   if (keyword === MODEL.VEHICLES) {
     sortData = [
+      { label: "-", value: "-" },
       {
         label: "name",
         value: "name",
       },
-      { label: "director", value: "director" },
+      { label: "manufacturer", value: "manufacturer" },
     ];
   }
 

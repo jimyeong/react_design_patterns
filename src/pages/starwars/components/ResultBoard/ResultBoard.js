@@ -25,7 +25,7 @@ function ResultBoard() {
     if (starwarsState.keyword == MODEL.FILMS)
       return <Films films={asyncState.data.results} />;
   }
-  return <ResultBoardBlock></ResultBoardBlock>;
+  return null;
 }
 
 export default ResultBoard;
