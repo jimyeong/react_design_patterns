@@ -17,6 +17,7 @@ function Starships({ starships }) {
     "Length",
     "Crew",
     "Passengers",
+    "Cargo capacity",
   ];
   return (
     <StarshipsBlock>

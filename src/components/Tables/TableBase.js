@@ -4,9 +4,11 @@ import styled from "styled-components";
  * config object should be CSS Style Object
  */
 const BASE_TABLEBLOCK = styled.table`
-  width: 100%;
-
+  thead {
+    text-align: center;
+  }
   > tbody {
+    text-align: center;
     tr {
       ${(props) => {
         if (props.config)

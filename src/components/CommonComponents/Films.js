@@ -24,7 +24,7 @@ function Films({ films }) {
           return (
             <TABLES.TABLE_ROW key={key}>
               <td>{film.title}</td>
-              <td>{film.episode_number}</td>
+              <td>{film.episode_id}</td>
               <td>{film.director}</td>
               <td>{film.producer}</td>
               <td>{film.release_date}</td>

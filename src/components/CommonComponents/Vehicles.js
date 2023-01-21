@@ -17,6 +17,7 @@ function Vehicles({ vehicles }) {
     "Length",
     "Crew",
     "Passengers",
+    "Cargo capacity",
   ];
   return (
     <VehiclesBlock>
