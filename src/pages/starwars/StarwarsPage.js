@@ -9,6 +9,7 @@ import ResultBoard from "./components/ResultBoard/ResultBoard";
 import { starwarsMainReducer } from "./reducers/starwarsMainReducer";
 import { SortController } from "./containers";
 import { StarwarsPagenation } from "./components";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // 문서로 먼저 작업을 정의하고 시작할 것
 // 1. when it's default state, show vehicles to users
@@ -45,7 +46,7 @@ const compareByKey = (key) => {
   };
 };
 
-function StarwarsPage({ children }) {
+function StarwarsPage() {
   const [starwarsState, starwarsDispatch] = useReducer(
     starwarsMainReducer,
     starwarsInitialState
@@ -60,10 +61,11 @@ function StarwarsPage({ children }) {
     const result = await _axios.get(params);
     return result;
   };
+  const createParams = () => {};
   const [asyncState, asyncDispatch] = useAsync(async () => {
     let result;
     if (starwarsState.keyword == MODEL.DEFAULT)
-      result = await callApi("/starships");
+      result = await callApi(`/${MODEL.STAR_SHIPS}`);
 
     // name
     if (starwarsState.keyword == MODEL.STAR_SHIPS)
@@ -122,8 +124,7 @@ function StarwarsPage({ children }) {
         <Wrappers.CONTENT_WRAPPER style={{ padding: 0, marginTop: "30px" }}>
           <ResultBoard />
         </Wrappers.CONTENT_WRAPPER>
-        {console.log("@@@@!@#!@#PAGE", asyncState)}
-        <StarwarsPagenation apiCall={callApi} />
+        <StarwarsPagenation callApi={callApi} />
       </StarwarsContext.Provider>
     </Wrappers.CONTENT_WRAPPER>
   );

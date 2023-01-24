@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { _axios } from "./server/index";
 import { utils } from "./utils";
 import StarwarsPage from "./pages/starwars/StarwarsPage";
+import { Routes, Route } from "react-router-dom";
 
 const INPUT_WRAPPER = styled.div`
   max-width: 1090px;
@@ -29,9 +30,12 @@ function App() {
   if (state.status == TYPE_LOAD.RETRY) return <div>something went wrong</div>;
 
   return (
-    <div>
-      <StarwarsPage />
-    </div>
+    <React.Fragment>
+      <Routes>
+        <Route path="/" element={<StarwarsPage />} />
+        <Route path="*" element={<div>No Match</div>} />
+      </Routes>
+    </React.Fragment>
   );
 }
 
