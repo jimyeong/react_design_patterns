@@ -9,14 +9,12 @@ const buttonStyle = {
   padding: "0px 8px",
 };
 
-function Pagenation({ next, previous, callApi, onClick }) {
+function Pagenation({ next, previous, onClick }) {
   const onHandleNextClick = async () => {
-    const result = await callApi(next);
-    if (onClick) onClick();
+    if (next) next();
   };
   const onHandlePrevClick = async () => {
-    const result = await callApi(previous);
-    if (onClick) onClick();
+    if (previous) previous();
   };
   return (
     <PagenationBlock>

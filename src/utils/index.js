@@ -129,4 +129,37 @@ export const utils = {
     if (first < second) return -1;
     if (first === second) return 0;
   },
+  setQueryStr: (params) => {
+    let URL = "?";
+    const length = Object.entries(params) - 1;
+    let i = 0;
+    for (const [key, value] of Object.entries(params)) {
+      if (i > 0) URL += "&";
+      URL += `${key}=${value}`;
+      i++;
+    }
+    return URL;
+  },
+  getQueryParams: (searchParams) => {
+    if (searchParams && typeof searchParams == "string") {
+      const params = [];
+      const a = searchParams.substring(1).split("&");
+      if (a[0] == "") return [];
+
+      for (let i = 0; i < a.length; i++) {
+        const b = a[i].split("=", 2);
+        let key = "";
+        let value = "";
+        if (b.length == 1) {
+          key = b[0];
+        } else {
+          key = b[0];
+          value = decodeURIComponent(b[1].replace(/\+/g, " "));
+        }
+        params.push({ key, value });
+      }
+      return params;
+    }
+    return [];
+  },
 };

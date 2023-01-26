@@ -12,17 +12,23 @@ const ResultBoardBlock = styled.div``;
 
 function ResultBoard() {
   const mainContext = useContext(StarwarsContext);
-  const { asyncState, asyncDispatch, starwarsDispatch, starwarsState } =
-    mainContext;
+  const {
+    asyncState,
+    asyncDispatch,
+    starwarsDispatch,
+    starwarsState,
+    keyword,
+  } = mainContext;
+  if (asyncState.status === TYPE_LOAD.LOADING) return null;
   if (asyncState.status === TYPE_LOAD.ERROR)
     return <div>something went wrong</div>;
   if (!asyncState.data) return <div>no result</div>;
   if (asyncState.data.results.length > 0) {
-    if (starwarsState.keyword == MODEL.STAR_SHIPS)
+    if (keyword == MODEL.STAR_SHIPS)
       return <Starships starships={asyncState.data.results} />;
-    if (starwarsState.keyword == MODEL.VEHICLES)
+    if (keyword == MODEL.VEHICLES)
       return <Vehicles vehicles={asyncState.data.results} />;
-    if (starwarsState.keyword == MODEL.FILMS)
+    if (keyword == MODEL.FILMS)
       return <Films films={asyncState.data.results} />;
   }
   return null;

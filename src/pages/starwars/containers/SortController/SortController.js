@@ -10,8 +10,15 @@ const SortControllerBlock = styled.div`
 `;
 
 function SortController({ children }) {
-  const { asyncState, asyncDispatch, starwarsDispatch, starwarsState } =
-    useContext(StarwarsContext);
+  const {
+    asyncState,
+    asyncDispatch,
+    starwarsDispatch,
+    starwarsState,
+    keyword,
+  } = useContext(StarwarsContext);
+
+  console.log("@@@select", keyword);
 
   const onChangeSortBy = (value) => {
     console.log("@@@@@@ASDASDASD", value);
@@ -26,7 +33,7 @@ function SortController({ children }) {
       <div>sort by:</div>
       <SortingSelect
         callback={onChangeSortBy}
-        keyword={starwarsState.keyword}
+        keyword={keyword}
         isSorted={starwarsState.isSorted}
       />
     </SortControllerBlock>

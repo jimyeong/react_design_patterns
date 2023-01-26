@@ -45,11 +45,11 @@ const intialState = {
   status: TYPE_LOAD.IDLE,
 };
 
-export function useAsync(callback, depth = []) {
+export function useAsync(callback, depth = [], flag) {
   const [asyncState, asyncDispatch] = useReducer(asyncReducer, intialState);
 
   useEffect(() => {
-    fetchData();
+    if (flag) fetchData();
   }, depth);
 
   const fetchData = async () => {

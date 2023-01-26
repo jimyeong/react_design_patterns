@@ -30,7 +30,7 @@ export const MODEL = {
   FILMS: "films",
 };
 const starwarsInitialState = {
-  keyword: MODEL.STAR_SHIPS,
+  keyword: "",
   isSorted: false,
   sortedBy: "-",
 };
@@ -47,6 +47,8 @@ const compareByKey = (key) => {
 };
 
 function StarwarsPage() {
+  const domLocation = useLocation();
+  const navigate = useNavigate();
   const [starwarsState, starwarsDispatch] = useReducer(
     starwarsMainReducer,
     starwarsInitialState
@@ -56,51 +58,66 @@ function StarwarsPage() {
       type: "SET_KEYWORD",
       payload: keyword,
     });
+
+    navigate(`/${utils.setQueryStr({ keyword: keyword })}`);
+
+    //console.log("@@@", setQueryStr({ keyword: keyword }));
+  };
+  const setEndPointParams = (params) => {
+    // starships/?page=2
+    const URL_PARAMS = utils.getQueryParams(domLocation.search);
+    let page = "";
+    let keyword = "";
+    for (let i = 0; i < URL_PARAMS.length; i++) {
+      if (URL_PARAMS[i].key == "page") page = URL_PARAMS[i].value;
+      if (URL_PARAMS[i].key == "keyword") keyword = URL_PARAMS[i].value;
+    }
+    let END_POINT = "/";
+    if (keyword == "") return END_POINT;
+
+    if (!keyword == "") {
+      END_POINT = `/${keyword}`;
+      if (page == "") return END_POINT;
+      if (!page == "") {
+        END_POINT = `/${keyword}?page=${page}`;
+        return END_POINT;
+      }
+    }
+
+    return;
   };
   const callApi = async (params) => {
     const result = await _axios.get(params);
     return result;
   };
-  const createParams = () => {};
-  const [asyncState, asyncDispatch] = useAsync(async () => {
-    let result;
-    if (starwarsState.keyword == MODEL.DEFAULT)
-      result = await callApi(`/${MODEL.STAR_SHIPS}`);
+  const [asyncState, asyncDispatch] = useAsync(
+    async () => {
+      // starships/?page=2
+      const URL_PARAMS = utils.getQueryParams(domLocation.search);
+      console.log("domLocation.search", domLocation);
+      const END_POINT = setEndPointParams(domLocation.search);
+      const result = await callApi(END_POINT);
 
-    // name
-    if (starwarsState.keyword == MODEL.STAR_SHIPS)
-      result = await callApi(`/${MODEL.STAR_SHIPS}`);
-
-    // name
-    if (starwarsState.keyword == MODEL.VEHICLES)
-      result = await callApi(`/${MODEL.VEHICLES}`);
-
-    // title
-    if (starwarsState.keyword == MODEL.FILMS)
-      result = await callApi(`/${MODEL.FILMS}`);
-
-    if (starwarsState.isSorted) {
-      if (
-        starwarsState.keyword == MODEL.STAR_SHIPS ||
-        starwarsState.keyword == MODEL.VEHICLES
-      ) {
+      if (starwarsState.isSorted) {
+        result.data.results = result.data.results.sort(
+          compareByKey(starwarsState.sortedBy)
+        );
         result.data.results = result.data.results.sort(
           compareByKey(starwarsState.sortedBy)
         );
       }
-      if (starwarsState.keyword == MODEL.FILMS) {
-        result.data.results = result.data.results.sort(
-          compareByKey(starwarsState.sortedBy)
-        );
-      }
-    }
-    if (result) return result;
+      if (result) return result;
+      return await callApi("/starships");
+    },
+    [starwarsState.keyword, starwarsState.sortedBy, domLocation.search],
+    domLocation.search !== "" ? true : false
+  );
 
-    return await callApi("/starships");
-  }, [starwarsState.keyword, starwarsState.sortedBy]);
-  useEffect(() => {
-    console.log("APP 실행됨");
-  }, []);
+  const URL_PARAMS = utils.getQueryParams(domLocation.search);
+  const keyword = URL_PARAMS.map((param) => {
+    return param.key == "keyword" && param.value;
+  });
+  useEffect(() => {}, [domLocation.search]);
   return (
     <Wrappers.CONTENT_WRAPPER>
       <StarwarsContext.Provider
@@ -109,22 +126,23 @@ function StarwarsPage() {
           starwarsState,
           asyncState,
           asyncDispatch,
+          keyword: keyword[0],
         }}
       >
         <INPUT_WRAPPER>
           <SearchBar callback={getSearchKeyword} id="search_key" />
         </INPUT_WRAPPER>
-        <div>keyword: {starwarsState.keyword}</div>
+        <div>keyword: {keyword}</div>
+        <SortController />
+        <Wrappers.CONTENT_WRAPPER style={{ padding: 0, marginTop: "30px" }}>
+          <ResultBoard />
+        </Wrappers.CONTENT_WRAPPER>
         {asyncState.status == TYPE_LOAD.LOADING && <div>loading</div>}
         {asyncState.status == TYPE_LOAD.ERROR && <div>error</div>}
         {asyncState.status == TYPE_LOAD.RETRY && (
           <div>something went wrong</div>
         )}
-        <SortController />
-        <Wrappers.CONTENT_WRAPPER style={{ padding: 0, marginTop: "30px" }}>
-          <ResultBoard />
-        </Wrappers.CONTENT_WRAPPER>
-        <StarwarsPagenation callApi={callApi} />
+        <StarwarsPagenation navigate={navigate} />
       </StarwarsContext.Provider>
     </Wrappers.CONTENT_WRAPPER>
   );
