@@ -26,19 +26,25 @@ function StarwarsPagenation({ navigate }) {
     const key = params[0];
     const value = params[1].substring("?page=".length);
     const END_POINT = utils.setQueryStr({ keyword: key, page: value });
-    return navigate(END_POINT);
+    return END_POINT;
   };
-
-  const onClickCallback = () => {};
 
   if (!asyncState.data) return null;
 
   const next = () => {
-    const a = trimAPI(asyncState.data.next);
-    console.log("@@@@whatis a", a);
+    const endpoint = trimAPI(asyncState.data.next);
+    navigate(endpoint);
   };
-  const prev = () => {};
-  return <Pagenation onClick={onClickCallback} next={next} previous={prev} />;
+  const prev = () => {
+    const endpoint = trimAPI(asyncState.data.previous);
+    navigate(endpoint);
+  };
+  return (
+    <Pagenation
+      next={asyncState.data.next && next}
+      previous={asyncState.data.previous && prev}
+    />
+  );
 }
 
 export default StarwarsPagenation;
