@@ -6,13 +6,15 @@ import styled from "styled-components";
 import { _axios } from "./server/index";
 import { utils } from "./utils";
 import StarwarsPage from "./pages/starwars/StarwarsPage";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
+import ReduxTutorialPage from "./pages/reduxTutorial/ReduxTutorialPage";
 
 const INPUT_WRAPPER = styled.div`
   max-width: 1090px;
   margin: 0 auto;
 `;
 
+const NAV = styled.nav``;
 function App() {
   const callApi = async (params) => {
     const result = await _axios.get(params);
@@ -31,8 +33,19 @@ function App() {
 
   return (
     <React.Fragment>
+      <NAV>
+        <ul>
+          <li>
+            <Link to="/">Redux Tutorial</Link>
+          </li>
+          <li>
+            <Link to="/starwars">Starwars</Link>
+          </li>
+        </ul>
+      </NAV>
       <Routes>
-        <Route path="/" element={<StarwarsPage />} />
+        <Route path="/" element={<ReduxTutorialPage />} />
+        <Route path="/starwars" element={<StarwarsPage />} />
         <Route path="*" element={<div>No Match</div>} />
       </Routes>
     </React.Fragment>
