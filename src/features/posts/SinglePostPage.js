@@ -7,7 +7,7 @@ function SinglePostPage() {
   const match = useMatch("/posts/:postId");
   const { postId } = match.params;
   const post = useSelector((state) =>
-    state.posts.find((post) => post.id === parseInt(postId))
+    state.posts.find((post) => post.id == postId)
   );
   if (!post) {
     return (

@@ -9,6 +9,7 @@ import StarwarsPage from "./pages/starwars/StarwarsPage";
 import { Routes, Route, Link } from "react-router-dom";
 import ReduxTutorialPage from "./pages/reduxTutorial/ReduxTutorialPage";
 import SinglePostPage from "./features/posts/SinglePostPage";
+import EditPostForm from "./features/posts/EditPostForm";
 
 const INPUT_WRAPPER = styled.div`
   max-width: 1090px;
@@ -47,6 +48,7 @@ function App() {
       <Routes>
         <Route path="/" element={<ReduxTutorialPage />} />
         <Route exact path="/posts/:postId" element={<SinglePostPage />} />
+        <Route exact path="/editPost/:postId" element={<EditPostForm />} />
         <Route path="/starwars" element={<StarwarsPage />} />
         <Route path="*" element={<div>No Match</div>} />
       </Routes>
