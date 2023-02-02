@@ -8,10 +8,7 @@ function AddPostForm({ children }) {
   const [userId, setUserId] = useState("");
   const dispatch = useDispatch();
 
-  const users = useSelector((state) => {
-    console.log("@@@state", state);
-    return state.users;
-  });
+  const users = useSelector((state) => state.users);
 
   const onTitleChange = (e) => setTitle(e.target.value);
   const onContentChange = (e) => setContent(e.target.value);
@@ -25,8 +22,7 @@ function AddPostForm({ children }) {
     }
   };
 
-  console.log("@@@users", users);
-  const canSave = Boolean(title) && Boolean(content) && Boolean(userId);
+  const canSave = Boolean(title) && Boolean(content);
   const usersOption = users.map((user) => (
     <option value={user.id} key={user.id}>
       {user.name}

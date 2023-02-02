@@ -59,7 +59,7 @@ function StarwarsPage() {
       payload: keyword,
     });
 
-    navigate(`/${utils.setQueryStr({ keyword: keyword })}`);
+    navigate(`/starwars/${utils.setQueryStr({ keyword: keyword })}`);
 
     //console.log("@@@", setQueryStr({ keyword: keyword }));
   };
