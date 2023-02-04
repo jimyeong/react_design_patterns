@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useMatch, Navigate } from "react-router-dom";
-import { postUpdated } from "./postSlice";
+import { postUpdated, selectByPostId } from "./postSlice";
 
 function EditPostForm({ children }) {
   const match = useMatch("/editPost/:postId");
   const { postId } = match.params;
-  const post = useSelector((state) =>
-    state.posts.find((post) => post.id == postId)
-  );
+  const post = useSelector((state) => selectByPostId(state, postId));
 
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);

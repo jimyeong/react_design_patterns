@@ -4,13 +4,12 @@ import { useSelector } from "react-redux";
 import { useMatch } from "react-router-dom";
 import PostAuthor from "./PostAuthor";
 import ReactionButtons from "./ReactionButtons";
+import { selectByPostId } from "./postSlice";
 
 function SinglePostPage() {
   const match = useMatch("/posts/:postId");
   const { postId } = match.params;
-  const post = useSelector((state) =>
-    state.posts.find((post) => post.id == postId)
-  );
+  const post = useSelector((state) => selectByPostId(state, postId));
 
   if (!post) {
     return (
