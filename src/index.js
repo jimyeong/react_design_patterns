@@ -6,20 +6,28 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./app/store";
 
+import { worker } from "./api/server";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 // root.render(
 //   <React.StrictMode>
 //     <App />
 //   </React.StrictMode>
 // );
+async function start() {
+  await worker.start({ onUnhandledRequest: "bypass" });
+  // store.dispatch(extend)
 
-root.render(
-  <BrowserRouter>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </BrowserRouter>
-);
+  root.render(
+    <BrowserRouter>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </BrowserRouter>
+  );
+}
+
+start();
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

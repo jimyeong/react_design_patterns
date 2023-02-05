@@ -5,47 +5,75 @@ import PostAuthor from "./PostAuthor";
 import TimeAgo from "./TimeAgo";
 import ReactionButtons from "./ReactionButtons";
 import { fetchPosts, selectAllPosts } from "./postSlice";
+import Spinner from "../../components/Spinner";
 
-export const PostsList = () => {
-  const posts = useSelector(selectAllPosts);
-  const dispatch = useDispatch();
-  const postStatus = useSelector((state) => state.posts.status);
-
-  const orderedPosts = posts
-    .slice()
-    .sort((a, b) => b.date.localeCompare(a.date));
-  useEffect(() => {
-    if (postStatus === "idle") {
-      dispatch(fetchPosts());
-    }
-  }, [postStatus, dispatch]);
-
-  const renderPosts = orderedPosts.map((post) => (
-    <article className="post-excerpt" key={post.id}>
+const PostExcerpt = ({ post }) => {
+  return (
+    <article className="post-excerpt">
       <h3>{post.title}</h3>
       <div>
         <PostAuthor userId={post.user} />
         <TimeAgo timestamp={post.date} />
       </div>
       <p className="post-content">{post.content.substring(0, 100)}</p>
-      <Link to={`/editPost/${post.id}`} className="button muted-button">
-        Edit Post
-      </Link>
-      <br />
+      <ReactionButtons post={post} />
       <Link to={`/posts/${post.id}`} className="button muted-button">
         View Post
       </Link>
-      <div>
-        <PostAuthor userId={post.userId} />
-      </div>
-      <ReactionButtons post={post} />
     </article>
-  ));
+  );
+};
+
+export const PostsList = () => {
+  const posts = useSelector(selectAllPosts);
+  const dispatch = useDispatch();
+  const postStatus = useSelector((state) => state.posts.status);
+  const error = useSelector((state) => state.posts.error);
+
+  useEffect(() => {
+    if (postStatus === "idle") {
+      dispatch(fetchPosts());
+    }
+  }, [postStatus, dispatch]);
+
+  let content;
+  if (postStatus === "loading") {
+    content = <Spinner text="Loading..." />;
+  } else if (postStatus === "succeeded") {
+    const orderedPosts = posts
+      .slice()
+      .sort((a, b) => b.date.localeCompare(a.date));
+
+    content = orderedPosts.map((post) => (
+      <article className="post-excerpt" key={post.id}>
+        <h3>{post.title}</h3>
+        <div>
+          <PostAuthor userId={post.user} />
+          <TimeAgo timestamp={post.date} />
+        </div>
+        <p className="post-content">{post.content.substring(0, 100)}</p>
+        <Link to={`/editPost/${post.id}`} className="button muted-button">
+          Edit Post
+        </Link>
+        <br />
+        <Link to={`/posts/${post.id}`} className="button muted-button">
+          View Post
+        </Link>
+        <div>
+          <PostAuthor userId={post.userId} />
+        </div>
+        <ReactionButtons post={post} />
+      </article>
+    ));
+  } else if (postStatus === "failed") {
+    console.log(error);
+    content = <div>{error}</div>;
+  }
 
   return (
     <section className="posts-list">
       <h2>Posts</h2>
-      {renderPosts}
+      {content}
     </section>
   );
 };

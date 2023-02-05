@@ -11,6 +11,7 @@ const initialState = {
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
   const response = await client.get("/fakeApi/posts");
+  console.log("@@hello", response);
   return response.data;
 });
 
@@ -20,7 +21,7 @@ const postsSlice = createSlice({
   reducers: {
     reactionAdded: (state, action) => {
       const { postId, reaction } = action.payload;
-      const existingPost = state.find((post) => post.id == postId);
+      const existingPost = state.posts.find((post) => post.id == postId);
       if (existingPost) {
         existingPost.reactions[reaction]++;
       }
@@ -73,7 +74,7 @@ export const { postAdded, postUpdated, reactionAdded } = postsSlice.actions;
 
 export default postsSlice.reducer;
 
-export const selectAllPosts = (state) => state.posts;
+export const selectAllPosts = (state) => state.posts.posts;
 
 export const selectByPostId = (state, postId) =>
   state.posts.find((post) => post.id === postId);
