@@ -18,3 +18,9 @@ the variable that decides the search feature should be dependant on URL
 ```
 sometimes, a string method "split" can return empty string,"", then use this, String.split("").filter(o=>o);
 ```
+
+###
+
+```
+npx msw init ./public
+```
