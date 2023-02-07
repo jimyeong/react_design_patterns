@@ -19,8 +19,6 @@ export async function client(endpoint, { body, ...customConfig } = {}) {
 
   let data;
   try {
-    console.log("@@@is it workging", endpoint);
-
     const response = await window.fetch(endpoint, config);
     data = await response.json();
 

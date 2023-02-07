@@ -5,6 +5,7 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./app/store";
+import { fetchUsers } from "./features/users/usersSlice";
 
 import { worker } from "./api/server";
 
@@ -14,9 +15,11 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 //     <App />
 //   </React.StrictMode>
 // );
+
 async function start() {
   await worker.start({ onUnhandledRequest: "bypass" });
   // store.dispatch(extend)
+  store.dispatch(fetchUsers());
 
   root.render(
     <BrowserRouter>

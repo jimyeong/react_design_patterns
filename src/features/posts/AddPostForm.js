@@ -1,28 +1,41 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postAdded } from "./postSlice";
+import { addNewPost } from "./postSlice";
 
 function AddPostForm({ children }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [userId, setUserId] = useState("");
+  const [addRequestStatus, setAddRequestStatus] = useState("idle");
+
   const dispatch = useDispatch();
 
   const users = useSelector((state) => state.users);
+  console.log("@@@@@users", users);
+
+  const canSave =
+    [title, content, userId].every(Boolean) && addRequestStatus === "idle";
+
+  const onSavePostClicked = async () => {
+    if (canSave) {
+      try {
+        setAddRequestStatus("pending");
+        await dispatch(addNewPost({ title, content, user: userId }));
+        setTitle("");
+        setContent("");
+        setUserId("");
+      } catch (err) {
+        console.error("Failed to save the post", err);
+      } finally {
+        setAddRequestStatus("idle");
+      }
+    }
+  };
 
   const onTitleChange = (e) => setTitle(e.target.value);
   const onContentChange = (e) => setContent(e.target.value);
   const onAuthorChange = (e) => setUserId(e.target.value);
-
-  const onSavePostClick = () => {
-    if (content && title) {
-      dispatch(postAdded(title, content, userId));
-      setTitle("");
-      setContent("");
-    }
-  };
-
-  const canSave = Boolean(title) && Boolean(content);
   const usersOption = users.map((user) => (
     <option value={user.id} key={user.id}>
       {user.name}
@@ -42,8 +55,8 @@ function AddPostForm({ children }) {
           onChange={onTitleChange}
         />
         <label htmlFor="postAuthor">User: </label>
-        <select id="postAuthor">
-          <option value={userId} onChange={onAuthorChange}></option>
+        <select id="postAuthor" value={userId} onChange={onAuthorChange}>
+          <option value=""></option>
           {usersOption}
         </select>
         <label htmlFor="postContent">Content: </label>
@@ -55,7 +68,7 @@ function AddPostForm({ children }) {
           cols="30"
           rows="10"
         ></textarea>
-        <button type="button" onClick={onSavePostClick} disabled={!canSave}>
+        <button type="button" onClick={onSavePostClicked} disabled={!canSave}>
           Save Post
         </button>
       </form>
