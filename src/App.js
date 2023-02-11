@@ -10,6 +10,8 @@ import { Routes, Route, Link } from "react-router-dom";
 import ReduxTutorialPage from "./pages/reduxTutorial/ReduxTutorialPage";
 import SinglePostPage from "./features/posts/SinglePostPage";
 import EditPostForm from "./features/posts/EditPostForm";
+import { UserPage } from "./features/users/UserPage";
+import { UserList } from "./features/users/UsersList";
 
 const INPUT_WRAPPER = styled.div`
   max-width: 1090px;
@@ -49,6 +51,8 @@ function App() {
         <Route path="/" element={<ReduxTutorialPage />} />
         <Route exact path="/posts/:postId" element={<SinglePostPage />} />
         <Route exact path="/editPost/:postId" element={<EditPostForm />} />
+        <Route exact path="/users" component={<UserList />} />
+        <Route exact path="/users/:userId" component={<UserPage />} />
         <Route path="/starwars" element={<StarwarsPage />} />
         <Route path="*" element={<div>No Match</div>} />
       </Routes>
