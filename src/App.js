@@ -12,6 +12,8 @@ import SinglePostPage from "./features/posts/SinglePostPage";
 import EditPostForm from "./features/posts/EditPostForm";
 import { UserPage } from "./features/users/UserPage";
 import { UserList } from "./features/users/UsersList";
+import { NotificationList } from "./features/notifications/NotificationList";
+import { Navbar } from "./app/Navbar";
 
 const INPUT_WRAPPER = styled.div`
   max-width: 1090px;
@@ -47,12 +49,14 @@ function App() {
           </li>
         </ul>
       </NAV>
+      <Navbar />
       <Routes>
         <Route path="/" element={<ReduxTutorialPage />} />
         <Route exact path="/posts/:postId" element={<SinglePostPage />} />
         <Route exact path="/editPost/:postId" element={<EditPostForm />} />
-        <Route exact path="/users" component={<UserList />} />
-        <Route exact path="/users/:userId" component={<UserPage />} />
+        <Route exact path="/users" element={<UserList />} />
+        <Route exact path="/users/:userId" element={<UserPage />} />
+        <Route exact path="/notifications" element={<NotificationList />} />
         <Route path="/starwars" element={<StarwarsPage />} />
         <Route path="*" element={<div>No Match</div>} />
       </Routes>
