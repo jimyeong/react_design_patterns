@@ -22,7 +22,8 @@ export const Navbar = () => {
   return (
     <nav>
       <section>
-        <h1>Redux Essentials Example</h1>
+        <h1 style={{ fontSize: "28px" }}>React Laboratory</h1>
+        <hr />
         <div className="navContent">
           <div className="navLinks">
             <Link to="/">Posts</Link>

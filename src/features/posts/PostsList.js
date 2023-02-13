@@ -7,7 +7,7 @@ import ReactionButtons from "./ReactionButtons";
 import { fetchPosts, selectAllPosts } from "./postSlice";
 import Spinner from "../../components/Spinner";
 
-const PostExcerpt = ({ post }) => {
+const PostExcerpt = React.memo(({ post }) => {
   return (
     <article className="post-excerpt">
       <h3>{post.title}</h3>
@@ -22,7 +22,7 @@ const PostExcerpt = ({ post }) => {
       </Link>
     </article>
   );
-};
+});
 
 export const PostsList = () => {
   const posts = useSelector(selectAllPosts);
@@ -47,22 +47,8 @@ export const PostsList = () => {
     content = orderedPosts.map((post) => (
       <article className="post-excerpt" key={post.id}>
         <h3>{post.title}</h3>
-        <div>
-          <PostAuthor userId={post.user} />
-          <TimeAgo timestamp={post.date} />
-        </div>
-        <p className="post-content">{post.content.substring(0, 100)}</p>
-        <Link to={`/editPost/${post.id}`} className="button muted-button">
-          Edit Post
-        </Link>
+        <PostExcerpt post={post} />
         <br />
-        <Link to={`/posts/${post.id}`} className="button muted-button">
-          View Post
-        </Link>
-        <div>
-          <PostAuthor userId={post.userId} />
-        </div>
-        <ReactionButtons post={post} />
       </article>
     ));
   } else if (postStatus === "failed") {
