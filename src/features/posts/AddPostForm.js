@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postAdded } from "./postSlice";
 import { addNewPost } from "./postSlice";
+import { selectAllUsers } from "../users/usersSlice";
 
 function AddPostForm({ children }) {
   const [title, setTitle] = useState("");
@@ -11,7 +12,8 @@ function AddPostForm({ children }) {
 
   const dispatch = useDispatch();
 
-  const users = useSelector((state) => state.users);
+  // const users = useSelector((state) => state.users);
+  const users = useSelector(selectAllUsers);
   console.log("@@@@@users", users);
 
   const canSave =
@@ -36,6 +38,7 @@ function AddPostForm({ children }) {
   const onTitleChange = (e) => setTitle(e.target.value);
   const onContentChange = (e) => setContent(e.target.value);
   const onAuthorChange = (e) => setUserId(e.target.value);
+
   const usersOption = users.map((user) => (
     <option value={user.id} key={user.id}>
       {user.name}

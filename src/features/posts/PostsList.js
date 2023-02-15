@@ -67,7 +67,7 @@ export const PostsList = () => {
   if (postStatus === "loading") {
     content = <Spinner text="Loading..." />;
   } else if (postStatus === "succeeded") {
-    console.log("@@@@orderedPostIdsorderedPostIds", orderedPostIds);
+    // console.log("@@@@orderedPostIdsorderedPostIds", orderedPostIds);
     content = orderedPostIds.map((postId) => (
       <PostExcerpt key={postId} postId={postId} />
     ));
