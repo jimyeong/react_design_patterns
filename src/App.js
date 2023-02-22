@@ -15,6 +15,7 @@ import { UserList } from "./features/users/UsersList";
 import { NotificationList } from "./features/notifications/NotificationList";
 import { Navbar } from "./app/Navbar";
 import OptimisingLaboratoryPage from "./pages/optimisingLaboratory/OptimisingLaboratoryPage";
+import ReduxTodoPattern from "./pages/TodosReduxPattern/ReduxTodoPattern";
 
 const INPUT_WRAPPER = styled.div`
   max-width: 1090px;
@@ -43,7 +44,7 @@ function App() {
       <NAV>
         <ul>
           <li>
-            <Link to="/">Redux Tutorial</Link>
+            <Link to="/reduxtutorial">Redux Tutorial</Link>
           </li>
           <li>
             <Link to="/starwars">Starwars</Link>
@@ -55,7 +56,8 @@ function App() {
       </NAV>
       <Navbar />
       <Routes>
-        <Route exact path="/" element={<ReduxTutorialPage />} />
+        <Route exact path="/" element={<ReduxTodoPattern />} />
+        <Route exact path="/reduxtutorial" element={<ReduxTutorialPage />} />
         <Route exact path="/posts/:postId" element={<SinglePostPage />} />
         <Route exact path="/editPost/:postId" element={<EditPostForm />} />
         <Route exact path="/users" element={<UserList />} />

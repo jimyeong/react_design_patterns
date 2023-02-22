@@ -60,8 +60,6 @@ function StarwarsPage() {
     });
 
     navigate(`/starwars/${utils.setQueryStr({ keyword: keyword })}`);
-
-    //console.log("@@@", setQueryStr({ keyword: keyword }));
   };
   const setEndPointParams = (params) => {
     // starships/?page=2
@@ -94,7 +92,6 @@ function StarwarsPage() {
     async () => {
       // starships/?page=2
       const URL_PARAMS = utils.getQueryParams(domLocation.search);
-      console.log("domLocation.search", domLocation);
       const END_POINT = setEndPointParams(domLocation.search);
       const result = await callApi(END_POINT);
 

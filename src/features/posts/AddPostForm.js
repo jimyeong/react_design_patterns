@@ -14,7 +14,6 @@ function AddPostForm({ children }) {
 
   // const users = useSelector((state) => state.users);
   const users = useSelector(selectAllUsers);
-  console.log("@@@@@users", users);
 
   const canSave =
     [title, content, userId].every(Boolean) && addRequestStatus === "idle";

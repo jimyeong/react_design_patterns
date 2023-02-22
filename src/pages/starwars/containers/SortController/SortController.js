@@ -18,10 +18,7 @@ function SortController({ children }) {
     keyword,
   } = useContext(StarwarsContext);
 
-  console.log("@@@select", keyword);
-
   const onChangeSortBy = (value) => {
-    console.log("@@@@@@ASDASDASD", value);
     starwarsDispatch({
       type: "SET_IS_SORTED",
       payload: { isSorted: true, sortedBy: value },

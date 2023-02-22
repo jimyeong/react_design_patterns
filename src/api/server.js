@@ -151,7 +151,6 @@ export const handlers = [
     data.user = user;
     data.reactions = db.reaction.create();
 
-    console.log("@@@@data", data);
     const post = db.post.create(data);
     return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(serializePost(post)));
   }),

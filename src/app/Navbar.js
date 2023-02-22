@@ -25,8 +25,16 @@ export const Navbar = () => {
         <h1 style={{ fontSize: "28px" }}>React Laboratory</h1>
         <hr />
         <div className="navContent">
-          <div className="navLinks">
-            <Link to="/">Posts</Link>
+          <div
+            className="navLinks"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+            }}
+          >
+            <Link to="/">Redux pattern Practise</Link>
+            <Link to="/reduxtutorial">Posts</Link>
             <Link to="/users">Users</Link>
             <Link to="notifications">
               Notifications {unreadNotificationsBadge}

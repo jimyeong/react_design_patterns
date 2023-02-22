@@ -17,14 +17,12 @@ const initialState = postsAdapter.getInitialState({
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
   const response = await client.get("/fakeApi/posts");
-  console.log("@@@response@@@", response);
   return response.data;
 });
 
 export const addNewPost = createAsyncThunk(
   "posts/addNewPost",
   async (initialPost) => {
-    console.log("@@@initaPost", initialPost);
     const response = await client.post("/fakeApi/posts", initialPost);
     return response.data;
   }
@@ -62,7 +60,6 @@ const postsSlice = createSlice({
     //   },
     // },
     postUpdated: (state, action) => {
-      console.log("@@!@#!@#!@#@@@@payload", action.payload);
       const { id, title, content } = action.payload;
       // const existingPost = state.posts.find((post) => post.id == id);
 

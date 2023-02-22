@@ -56,7 +56,6 @@ export function useAsync(callback, depth = [], flag) {
     asyncDispatch({ type: TYPE_LOAD.LOADING, ...asyncState });
     try {
       const result = await callback();
-      console.log("@@@@!!@#!@#", result);
       asyncDispatch({
         type: TYPE_LOAD.SUCCESS,
         payload: result.data,

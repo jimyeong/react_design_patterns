@@ -56,7 +56,6 @@ export const PostsList = ({ postId }) => {
   const orderedPostIds = useSelector(selectPostIds);
 
   const postStatus = useSelector((state) => {
-    console.log("@@@state@@@@", state);
     return state.posts.status;
   });
   const error = useSelector((state) => state.posts.error);
@@ -71,7 +70,6 @@ export const PostsList = ({ postId }) => {
   if (postStatus === "loading") {
     content = <Spinner text="Loading..." />;
   } else if (postStatus === "succeeded") {
-    console.log("@@@@orderedPostIdsorderedPostIds", orderedPostIds);
     content = orderedPostIds.map((postId) => {
       return <PostExcerpt key={postId} postId={postId} />;
     });
@@ -88,7 +86,6 @@ export const PostsList = ({ postId }) => {
     //   </article>
     // ));
   } else if (postStatus === "failed") {
-    // console.log(error);
     content = <div>{error}</div>;
   }
 
