@@ -49,12 +49,16 @@ const PostExcerpt = React.memo(({ postId }) => {
   );
 });
 
-export const PostsList = () => {
-  const posts = useSelector(selectAllPosts);
+export const PostsList = ({ postId }) => {
+  // const posts = useSelector(selectAllPosts);
+
   const dispatch = useDispatch();
   const orderedPostIds = useSelector(selectPostIds);
 
-  const postStatus = useSelector((state) => state.posts.status);
+  const postStatus = useSelector((state) => {
+    console.log("@@@state@@@@", state);
+    return state.posts.status;
+  });
   const error = useSelector((state) => state.posts.error);
 
   useEffect(() => {
@@ -67,11 +71,12 @@ export const PostsList = () => {
   if (postStatus === "loading") {
     content = <Spinner text="Loading..." />;
   } else if (postStatus === "succeeded") {
-    // console.log("@@@@orderedPostIdsorderedPostIds", orderedPostIds);
-    content = orderedPostIds.map((postId) => (
-      <PostExcerpt key={postId} postId={postId} />
-    ));
+    console.log("@@@@orderedPostIdsorderedPostIds", orderedPostIds);
+    content = orderedPostIds.map((postId) => {
+      return <PostExcerpt key={postId} postId={postId} />;
+    });
     // const orderedPosts = posts
+
     //   .slice()
     //   .sort((a, b) => b.date.localeCompare(a.date));
 
@@ -83,7 +88,7 @@ export const PostsList = () => {
     //   </article>
     // ));
   } else if (postStatus === "failed") {
-    console.log(error);
+    // console.log(error);
     content = <div>{error}</div>;
   }
 

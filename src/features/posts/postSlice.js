@@ -6,21 +6,18 @@ import {
   createEntityAdapter,
 } from "@reduxjs/toolkit";
 import { client } from "../../api/client";
-import { sub } from "date-fns";
-import { useSelector } from "react-redux";
-
 const postsAdapter = createEntityAdapter({
-  sortComparer: (a, b) => b.date.locareCompare(a.date),
+  sortComparer: (a, b) => b.date.localeCompare(a.date),
 });
 
-const initialState = {
-  posts: [],
+const initialState = postsAdapter.getInitialState({
   status: "idle",
   error: null,
-};
+});
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
   const response = await client.get("/fakeApi/posts");
+  console.log("@@@response@@@", response);
   return response.data;
 });
 
@@ -65,8 +62,10 @@ const postsSlice = createSlice({
     //   },
     // },
     postUpdated: (state, action) => {
+      console.log("@@!@#!@#!@#@@@@payload", action.payload);
       const { id, title, content } = action.payload;
       // const existingPost = state.posts.find((post) => post.id == id);
+
       const existingPost = state.entities[id];
       if (existingPost) {
         existingPost.title = title;
@@ -82,15 +81,17 @@ const postsSlice = createSlice({
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.status = "succeeded";
         // state.posts = state.posts.concat(action.payload);
-        postsAdapter.updateMany(state, action.payload);
+        postsAdapter.upsertMany(state, action.payload);
       })
+
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
-      });
-    builder.addCase(addNewPost.fulfilled, (state, action) => {
-      state.posts.push(action.payload);
-    });
+      })
+      .addCase(addNewPost.fulfilled, postsAdapter.addOne);
+    // builder.addCase(addNewPost.fulfilled, (state, action) => {
+    //   state.posts.push(action.payload);
+    // });
   },
 });
 

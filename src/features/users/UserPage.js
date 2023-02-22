@@ -18,6 +18,8 @@ export const UserPage = () => {
 
   const postsForUser = useSelector((state) => selectPostsByUser(state, userId));
 
+  console.log("@@@postsForUser", postsForUser);
+
   const postTitles = postsForUser.map((post) => (
     <li key={post.id}>
       <Link to={`/posts/${post.id}`}>{post.title}</Link>
